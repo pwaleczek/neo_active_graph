@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email          = "pawel@thisismyasterisk.org"
   spec.homepage       = "https://github.com/pwaleczek/neo_active_graph"
 
-  spec.files          =  Dir["spec/**/*", "lib/**/*"]
+  spec.files          =  Dir["Readme.md", "License", "Rakefile", "spec/**/*", "lib/**/*"]
   spec.require_path   = "lib"
 
   spec.add_dependency 'neography', '~> 1.3.12'

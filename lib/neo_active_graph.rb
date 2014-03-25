@@ -1,9 +1,13 @@
 require 'neography'
+require 'neo_active_graph/config'
 require 'neo_active_graph/schema'
 require 'neo_active_graph/node'
 
 module NeoActiveGraph
-  @rest = Neography::Rest.new(ENV['GRAPHENEDB_URL'])
+
+  def self.configure neography_rest={}
+    @rest = neography_rest ||= Neography::Rest.new
+  end
 
   def self.db
     @rest
