@@ -3,6 +3,21 @@ An ActiveRecord-like [Neography](https://github.com/maxdemarzi/neography) wrappe
 
 The aim is to get as close as possible to the Active Record usage metods as possible. This gem relies on the Neo4j REST API. No JRuby! Yay!!
 
+### Configuration
+
+Configure Neography separately [like here](https://github.com/maxdemarzi/neography/wiki/Configuration-and-initialization)
+then in the same initializer do
+
+__OR__
+
+just use the quick init method
+
+```ruby
+
+NeoActiveGraph.configure "http://user:pass@some-host.com:7474"
+
+```
+
 ### TO-DO
 - lots of stuff
 
