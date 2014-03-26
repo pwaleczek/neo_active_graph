@@ -1,5 +1,14 @@
 module NeoActiveGraph
   module Validator
+    def valid?
+      @properties.each do |prop, val|
+        return unless validate prop, val
+      end
+    end
+
+    def validate_all properties={}
+      properties
+    end
 
     def validate property, value
 

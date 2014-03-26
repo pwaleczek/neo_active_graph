@@ -41,7 +41,9 @@ module NeoActiveGraph
     end
 
     def label; @label; end
+    def unique; @unique; end
     def validators; @validators; end
+    def properties; @properties; end
 
     def initialize properties={}
 
@@ -53,7 +55,7 @@ module NeoActiveGraph
       @validators = self.class.get_validators
 
       properties.each do |attr, value|
-        return unless validate attr, value
+        # return unless validate attr, value
 
         @properties.merge! attr => value
 
@@ -64,7 +66,7 @@ module NeoActiveGraph
 
       self.class.before_filters.each do |method|
         method unless self.respond_to?(method)
-      end
+      end unless self.class.before_filters.nil?
 
     end
 

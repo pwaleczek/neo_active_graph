@@ -1,5 +1,4 @@
 require 'neography'
-require 'neo_active_graph/config'
 require 'neo_active_graph/schema'
 require 'neo_active_graph/node'
 
