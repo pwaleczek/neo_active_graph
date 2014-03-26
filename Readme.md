@@ -1,10 +1,11 @@
 # NeoActiveGraph
+[![Build Status](https://travis-ci.org/pwaleczek/neo_active_graph.svg?branch=master)](https://travis-ci.org/pwaleczek/neo_active_graph)
 An ActiveRecord-like [Neography](https://github.com/maxdemarzi/neography) wrapper.
 
 The aim is to get as close as possible to the Active Record usage metods as possible. This gem relies on the Neo4j REST API. No JRuby! Yay!!
 
-## Installation 
-It's an early WIP. Install from here only at the moment. 
+## Installation
+It's an early WIP. Install from here only at the moment.
 
 ## Configuration
 

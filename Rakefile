@@ -10,7 +10,7 @@ require "neo_active_graph/tasks"
 desc "Run all specs"
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = true
-  t.rspec_opts = '--format documentation'
+  t.rspec_opts = '--color --format documentation'
 end
 
 task :default => :spec
