@@ -19,6 +19,8 @@ module NeoActiveGraph
       end
 
       def property name, options={}
+        @properties ||= {}
+        @properties.merge! name => nil
         @validators ||= {}
         @validators.merge! name => options
       end
@@ -33,9 +35,11 @@ module NeoActiveGraph
         @after_filters += methods
       end
 
-      def get_validators; @validators; end
       def get_label; @label; end
       def get_unique; @unique; end
+      def get_validators; @validators; end
+      def get_properties; @properties; end
+
 
       attr_accessor :before_filters, :after_filters
     end
@@ -47,22 +51,22 @@ module NeoActiveGraph
 
     def initialize properties={}
 
-      @properties ||= {}
+      @properties = self.class.get_properties
 
       @unique = self.class.get_unique
 
       @label = self.class.get_label
       @validators = self.class.get_validators
 
-      properties.each do |attr, value|
+      @properties.each do |attr, value|
         # return unless validate attr, value
-
-        @properties.merge! attr => value
+        @properties[attr] = properties[attr] unless validate attr, value
+        # @properties.merge! attr => value
 
         self.class.send(:attr_accessor, attr)
         self.send("#{attr}=", value)
 
-      end if properties
+      end if @properties
 
       self.class.before_filters.each do |method|
         method unless self.respond_to?(method)
