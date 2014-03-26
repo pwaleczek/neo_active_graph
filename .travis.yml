@@ -8,4 +8,20 @@ rvm:
   - 2.1.0
   - 2.1.1
 
-script: bundle exec rspec -bfs spec
+# needed for local Neo4j 2.0+
+jdk:
+    - oraclejdk7
+
+# test across multiple versions of Neo4j:
+env:
+    - NEO4J_VERSION="2.0.1"
+    - NEO4J_VERSION="1.9.6"
+    - NEO4J_VERSION="1.8.3"
+
+before_install:
+    # install Neo4j locally:
+    - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
+    - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
+    - neo4j-community-$NEO4J_VERSION/bin/neo4j start
+
+script: bundle exec rspec -bc

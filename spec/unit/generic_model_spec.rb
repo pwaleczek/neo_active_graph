@@ -1,4 +1,3 @@
-
 require 'neo_active_graph/schema'
 
 describe 'Model < NeoActiveGraph::Schema' do
