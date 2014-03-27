@@ -20,7 +20,7 @@ describe 'NeoActiveGraph::Node schema' do
       property :name, :type => String
     end
 
-    node = NodeModel.new :name => "Paweł"
+    node = NodeModel.new :name => "Pawel"
     node.should be_valid
     node.properties.should be_a Hash
     node_by_id = node.id

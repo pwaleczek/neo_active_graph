@@ -10,20 +10,15 @@ It's an early WIP. Install from here only at the moment.
 ## Configuration
 
 Configure Neography separately [like here](https://github.com/maxdemarzi/neography/wiki/Configuration-and-initialization)
-then in the same initializer do
 
 __OR__
 
 just use the quick init method
 
 ```ruby
-
 NeoActiveGraph.configure "http://user:pass@some-host.com:7474"
-
 ```
 
-### TO-DO
-- lots of stuff
 
 ##License
 
