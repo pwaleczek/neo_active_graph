@@ -28,6 +28,8 @@ describe 'NeoActiveGraph::Node schema' do
 
   it 'gets a node by id' do
     node = NeoActiveGraph::Node.find(node_by_id)
+    node.should be_a NeoActiveGraph::Node
+    node.id.should eql node_by_id
   end
 end
 

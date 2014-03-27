@@ -8,17 +8,20 @@ module NeoActiveGraph
         case attrs
         when Fixnum
           node = NeoActiveGraph.db.get_node attrs
+          properties = NeoActiveGraph.db.get_node_properties(node)
+          instance = new properties
+          instance.node = node
+          return instance
         when Array
           nodes = NeoActiveGraph.db.get_nodes attrs
         end
-
       end
+
+      attr_accessor :node
     end
 
     def initialize properties={}
       super properties
-
-      # return if properties.empty?
 
       create @properties
 
@@ -36,6 +39,12 @@ module NeoActiveGraph
       NeoActiveGraph.db.get_node_properties @node
     end
 
+    def node; @node; end
+
+    def node= node
+      @node = node
+    end
+
   private
 
     def create *properties
@@ -50,7 +59,7 @@ module NeoActiveGraph
 
       NeoActiveGraph.db.set_label @node, @label if @label
 
-      @node
+      # self
     end
 
     # def self.properties *attrs
