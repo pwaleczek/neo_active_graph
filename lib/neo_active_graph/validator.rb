@@ -1,7 +1,6 @@
 module NeoActiveGraph
   module Validator
 
-
     def valid?
       return true unless @properties
 

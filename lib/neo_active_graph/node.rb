@@ -1,10 +1,24 @@
+require 'neo_active_graph/schema'
+
 module NeoActiveGraph
   class Node < NeoActiveGraph::Schema
+
+    class << self
+      def find attrs
+        case attrs
+        when Fixnum
+          node = NeoActiveGraph.db.get_node attrs
+        when Array
+          nodes = NeoActiveGraph.db.get_nodes attrs
+        end
+
+      end
+    end
 
     def initialize properties={}
       super properties
 
-      return if properties.empty?
+      # return if properties.empty?
 
       create @properties
 
@@ -14,20 +28,29 @@ module NeoActiveGraph
 
     end
 
+    def id
+      @node["self"].split("/").last.to_i
+    end
+
+    def properties
+      NeoActiveGraph.db.get_node_properties @node
+    end
+
   private
 
     def create *properties
-      node = nil
+      @node = nil
 
       if @unique.nil?
-        node = Graph.db.create_node *properties
+        @node = NeoActiveGraph.db.create_node *properties
       else
-        node = Graph.db.create_unique_node @unique[:name], @unique[:key], Hash[*properties][@unique[:key].to_sym], *properties
+        @node = NeoActiveGraph.db.create_unique_node @unique[:name], @unique[:key], Hash[*properties][@unique[:key].to_sym], *properties
 
       end
 
-      Graph.db.set_label node, @label if @label
+      NeoActiveGraph.db.set_label @node, @label if @label
 
+      @node
     end
 
     # def self.properties *attrs

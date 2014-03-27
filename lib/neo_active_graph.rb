@@ -14,6 +14,8 @@ module NeoActiveGraph
       # running locally
       @rest = Neography::Rest.new
     end
+
+
   end
 
   def self.db

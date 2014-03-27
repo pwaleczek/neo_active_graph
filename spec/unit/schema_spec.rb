@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'neo_active_graph/schema'
 
 describe 'NeoActiveGraph::Schema' do

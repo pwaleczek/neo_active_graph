@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'neo_active_graph/schema'
 
 describe 'Model < NeoActiveGraph::Schema' do
@@ -40,7 +41,7 @@ describe 'Model < NeoActiveGraph::Schema' do
     model.name.should be_nil
   end
 
-  it 'has required properties' do
+  it 'validates property presence' do
     class Model < NeoActiveGraph::Schema
       property :name, :presence => true
     end

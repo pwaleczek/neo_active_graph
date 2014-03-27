@@ -6,10 +6,6 @@ module NeoActiveGraph
 
     class << self
 
-      # @label = nil
-      # @unique = nil
-      # @before_filters = nil
-
       def label name
         @label = name
       end
