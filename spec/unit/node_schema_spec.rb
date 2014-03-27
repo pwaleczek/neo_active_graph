@@ -4,7 +4,7 @@ require 'neo_active_graph/node'
 
 describe 'NeoActiveGraph::Node schema' do
   before do
-    NeoActiveGraph.configure 'http://localhost:7475'
+    NeoActiveGraph.configure 'http://localhost:7475' unless ENV["TRAVIS"]
   end
 
   node_by_id = nil
