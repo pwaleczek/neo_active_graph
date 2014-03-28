@@ -5,7 +5,7 @@ module NeoActiveGraph
       return true unless @properties
 
       @properties.each do |prop, val|
-        return unless validate prop, val
+        return false unless validate prop, val
       end
     end
 
@@ -16,27 +16,21 @@ module NeoActiveGraph
     def validate property, value
       @errors ||= []
       checks = @validators[property.to_sym]
-      ret_val = false
 
       checks.each do |name, method|
-
         case name
         when :type
-          t = value.is_a?(method)
-          @errors.push "Value type does not match the declared one" unless t
-          ret_val = t
+          @errors.push "Value type does not match the declared one (#{method})" unless (value.is_a?(method) || (value.nil? && !checks[:presence]))
         when :format
-          @errors.push "Format needs to be a regular expression" unless method.is_a?(Regexp)
-          ret_val = !!(value =~ method)
+          @errors.push "Format needs to be a regular expression" unless (method.is_a?(Regexp) && !!(value =~ method))
         when :presence
-          t = !(value.nil? || value.empty?)
-          @errors.push "Value must be present" unless t
-          ret_val = t
+
+          @errors.push "Value must be present" if value.nil?
         end
 
-      end unless checks.nil?
+      end if checks
 
-      ret_val
+      @errors.empty?
     end
   end
 end
