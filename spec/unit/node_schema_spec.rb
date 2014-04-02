@@ -7,6 +7,7 @@ describe 'NeoActiveGraph::Node' do
     NeoActiveGraph.configure 'http://localhost:7475' unless ENV["TRAVIS"]
 
     class NodeModel < NeoActiveGraph::Node
+      label "Person"
       property :name, :type => String
     end
   end
@@ -16,6 +17,7 @@ describe 'NeoActiveGraph::Node' do
 
   it 'creates a node without properties' do
     node = NodeModel.create
+    node.should be_a NeoActiveGraph::Node
     node.should be_valid
     by_id_1 = node.id
     # puts node.properties#.should be_a Hash
@@ -23,6 +25,7 @@ describe 'NeoActiveGraph::Node' do
 
   it 'creates a node with properties' do
     node = NodeModel.create :name => "Charles Bronson"
+    node.should be_a NeoActiveGraph::Node
     node.should be_valid
     node.properties.should be_a Hash
     node.name.should eql 'Charles Bronson'

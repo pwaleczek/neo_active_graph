@@ -1,4 +1,8 @@
 require 'neography'
+require 'neo4j-cypher'
+require 'neo4j-cypher/neography'
+require 'neo_active_graph/query'
+require 'neo_active_graph/validator'
 require 'neo_active_graph/schema'
 require 'neo_active_graph/node'
 

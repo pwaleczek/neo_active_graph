@@ -1,5 +1,3 @@
-require 'neo_active_graph/validator'
-
 module NeoActiveGraph
   class Schema
     include NeoActiveGraph::Validator
@@ -40,10 +38,8 @@ module NeoActiveGraph
       attr_accessor :before_filters, :after_filters
     end
 
-    def label; @label; end
-    def unique; @unique; end
-    def validators; @validators; end
-    def properties; @properties; end
+    attr_accessor :label, :unique
+    attr_reader :validators, :properties
 
     def initialize properties={}
 
@@ -58,6 +54,7 @@ module NeoActiveGraph
         return unless validate attr, properties[attr]
 
         attr = attr.to_sym
+
         @properties[attr] = properties[attr]
 
         self.class.send(:attr_accessor, attr)

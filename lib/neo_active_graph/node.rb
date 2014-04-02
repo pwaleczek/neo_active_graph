@@ -1,5 +1,3 @@
-require 'neo_active_graph/schema'
-
 module NeoActiveGraph
   class Node < NeoActiveGraph::Schema
 
@@ -50,20 +48,22 @@ module NeoActiveGraph
     end
 
     def save
-      create @properties
+      node = self.create @properties
       self.class.after_filters.each do |method|
         method unless self.respond_to?(method)
       end
+      node
     end
+
+    def relationships name, type="all"
+
+    end
+
+
 
     def id
       @node["self"].split("/").last.to_i
     end
-
-
-    # def properties
-    #   @properties
-    # end
 
     def node; @node; end
 
@@ -71,12 +71,5 @@ module NeoActiveGraph
       @node = node
     end
 
-    # def self.properties *attrs
-    #   @db.get_node_properties attrs
-    # end
-
-    # def self.to_index *attrs
-    #   @db.add_node_to_index attrs
-    # end
   end
 end

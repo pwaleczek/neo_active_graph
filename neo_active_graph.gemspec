@@ -14,7 +14,8 @@ Gem::Specification.new do |spec|
   spec.files          =  Dir["Readme.md", "License", "Rakefile", "spec/**/*", "lib/**/*"]
   spec.require_path   = "lib"
 
-  spec.add_dependency 'neography', '~> 1.3.12'
+  spec.add_dependency "neography", "~> 1.3.12"
+  spec.add_dependency "neo4j-cypher", "~> 1.0.3"
 
-  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency "rspec"
 end

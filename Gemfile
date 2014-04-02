@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gemspec
 
 gem 'neography', '~> 1.3.12'
+gem 'neo4j-cypher', '~> 1.0.3'
 
 group :development, :test do
   gem "rake",  ">= 0.8.7"
