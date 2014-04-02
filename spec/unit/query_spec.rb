@@ -14,7 +14,7 @@ describe 'NeoActiveGraph::Query' do
   end
 
   it 'does a Cypher query passed as a String' do
-    result = NeoActiveGraph::Query.execute("START n=node(*) MATCH (john {name: \"Charles Bronson\"}) RETURN john")
+    result = NeoActiveGraph::Query.execute("MATCH (john {name: \"Charles Bronson\"}) RETURN john")
     result.should be_a Hash
   end
 

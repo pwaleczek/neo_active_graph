@@ -48,11 +48,14 @@ module NeoActiveGraph
     end
 
     def save
-      node = self.create @properties
-      self.class.after_filters.each do |method|
-        method unless self.respond_to?(method)
+      if @node
+        NeoActiveGraph.db.set_node_properties(@node, @properties)
+      else
+        self.create @properties
+        self.class.after_filters.each do |method|
+          method unless self.respond_to?(method)
+        end
       end
-      node
     end
 
     def relationships name, type="all"

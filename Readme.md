@@ -19,6 +19,39 @@ just use the quick init method
 NeoActiveGraph.configure "http://user:pass@some-host.com:7474"
 ```
 
+## Define Models
+
+Define models for nodes and relationships.
+Both types work almost alike, except that they inherit from different classes:
+
+- __Nodes__ from `NeoActiveGraph::Node`
+
+```ruby
+class User < NeoActiveGraph::Node
+
+  label "User"
+
+  unique "USER_IDX", :name
+
+  property :name, :type => String, :presence => true
+  property :email, :type => String, :presence => true, :format => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  property :age, :type => Fixnum
+end
+```
+
+- __Relationships__ from `NeoActiveGraph::Relationship`
+
+```ruby
+# TODO
+```
+
+## Usage
+
+### Nodes
+
+Creating and manipulating nodes...
+
+
 
 ##License
 

@@ -42,6 +42,8 @@ module NeoActiveGraph
     attr_reader :validators, :properties
 
     def initialize properties={}
+      # if this is nil then the node has not yet been created in the db
+      @node = nil
 
       @properties = self.class.get_properties
 

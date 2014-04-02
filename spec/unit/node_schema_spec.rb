@@ -49,5 +49,10 @@ describe 'NeoActiveGraph::Node' do
       end
     end
   end
+
+  it 'verifies if node is already in the db'
+  it 'sets node properties'
+  it 'updates node properties'
+  it 'resets node properties'
 end
 
