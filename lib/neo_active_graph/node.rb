@@ -71,5 +71,8 @@ module NeoActiveGraph
       @node = node
     end
 
+    # for compatibility reasons
+    alias_method :neo_id, :id
+
   end
 end
