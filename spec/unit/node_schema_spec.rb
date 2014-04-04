@@ -32,6 +32,13 @@ describe 'NeoActiveGraph::Node' do
     by_id_2 = node.id
   end
 
+  it 'creates a node instance and saves it' do
+    node = NodeModel.new
+    node.name = 'Charlie Sheen'
+    puts node.unique.nil?
+  end
+
+
   it 'gets a node by id' do
     node = NodeModel.find(by_id_2)
     node.should be_a NeoActiveGraph::Node
@@ -54,4 +61,6 @@ describe 'NeoActiveGraph::Node' do
   it 'sets node properties'
   it 'updates node properties'
   it 'resets node properties'
+
+
 end

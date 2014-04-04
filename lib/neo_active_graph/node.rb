@@ -8,7 +8,8 @@ module NeoActiveGraph
         if instance.unique.nil?
           instance.node = NeoActiveGraph.db.create_node properties
         else
-          instance.node = NeoActiveGraph.db.create_unique_node instance.unique[:name], instance.unique[:key], Hash[*properties][instance.unique[:key].to_sym], properties
+          puts properties
+          instance.node = NeoActiveGraph.db.create_unique_node instance.unique[:name], instance.unique[:key], Hash[*properties][instance.unique[:key].to_sym]
         end
         # add if label given in the model
         NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
@@ -55,7 +56,7 @@ module NeoActiveGraph
         NeoActiveGraph.db.set_node_properties(@node, @properties)
       else
         # nothing in the db, need to make a node
-        self.create @properties
+        self.class.create @properties
         self.class.after_filters.each do |method|
           method unless self.respond_to?(method)
         end
@@ -66,7 +67,13 @@ module NeoActiveGraph
 
     end
 
-    def id; @node["self"].split("/").last.to_i; end
+    def id
+      if @node
+        @node["self"].split("/").last.to_i
+      else
+        'id'
+      end
+    end
     def node; @node; end
     def node= node; @node = node; end
 

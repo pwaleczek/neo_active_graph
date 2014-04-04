@@ -34,7 +34,6 @@ module NeoActiveGraph
       def get_validators; @validators; end
       def get_properties; @properties; end
 
-
       attr_accessor :before_filters, :after_filters
     end
 
@@ -66,6 +65,11 @@ module NeoActiveGraph
         method unless self.respond_to?(method)
       end unless self.class.before_filters.nil?
 
+    end
+
+
+    def persisted?
+      self.id == 1
     end
 
   end
