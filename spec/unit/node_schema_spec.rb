@@ -55,4 +55,3 @@ describe 'NeoActiveGraph::Node' do
   it 'updates node properties'
   it 'resets node properties'
 end
-

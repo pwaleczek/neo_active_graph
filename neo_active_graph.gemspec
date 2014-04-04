@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.platform       = Gem::Platform::RUBY
   spec.name           = "neo_active_graph"
-  spec.version        = "0.0.3"
+  spec.version        = "0.0.4"
   spec.summary        = "Neography ActiveRecord-like wrapper"
   spec.description    = ""
 
