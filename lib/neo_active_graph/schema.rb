@@ -53,11 +53,9 @@ module NeoActiveGraph
       @validators = self.class.get_validators
 
       @properties.each do |attr, value|
-        return unless validate attr, properties[attr]
-
         attr = attr.to_sym
 
-        @properties[attr] = properties[attr]
+        @properties[attr] = properties[attr] || nil
 
         self.class.send(:attr_accessor, attr)
         self.send("#{attr}=", properties[attr])
