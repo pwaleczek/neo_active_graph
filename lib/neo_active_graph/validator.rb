@@ -7,7 +7,7 @@ module NeoActiveGraph
     end
 
     def errors
-      @errors
+      @errors ||= {}
     end
 
     def get_property_for_validation property
@@ -16,17 +16,17 @@ module NeoActiveGraph
 
     def validate_presence property, value
       prop = get_property_for_validation property
-      @errors.push "Value must be present" if prop.nil?
+      add_error property, "Value must be present" if prop.nil?
     end
 
     def validate_format property, value
       prop = get_property_for_validation property
-      @errors.push "Format needs to be a regular expression" unless (@validators[property][:format].is_a?(Regexp) && !!(value =~ @validators[property][:format]))
+      add_error property, "Format needs to be a regular expression" unless (@validators[property][:format].is_a?(Regexp) && !!(value =~ @validators[property][:format]))
     end
 
     def validate_type property, value
       prop = get_property_for_validation property
-      @errors.push "#{property}: Value type does not match the declared one (#{@validators[property][:type]})" unless value.is_a?(@validators[property][:type])
+      add_error property, "Value type does not match the declared one (#{@validators[property][:type]})" unless value.is_a?(@validators[property][:type])
     end
 
     def parse_validators list={}
@@ -40,6 +40,11 @@ module NeoActiveGraph
       end
     end
 
+    def add_error property, message
+      @errors ||= {}
+      @errors[property] = message
+    end
+
     def validate
       return true unless @properties
 
@@ -50,7 +55,7 @@ module NeoActiveGraph
     end
 
     def validate_each property, value
-      @errors ||= []
+      @errors ||= {}
       @validators[property].each do |name, validation|
         self.send "validate_#{name}", property, value if @validators[property][:presence]
       end

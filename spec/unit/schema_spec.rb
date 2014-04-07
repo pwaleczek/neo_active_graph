@@ -9,6 +9,7 @@ describe 'NeoActiveGraph::Schema' do
       label 'TestLabel'
       unique 'UniqueIndex', :uniqueProperty
       property :name, :type => String
+      property :age, :type => Fixnum
     end
 
     class OtherModel < NeoActiveGraph::Schema
@@ -96,4 +97,14 @@ describe 'NeoActiveGraph::Schema' do
     model.errors.should be_empty
   end
 
+  it 'han errors' do
+    model = OtherModel.new
+    model.errors.should respond_to :[]
+  end
+
+  it 'responds to properties' do
+    model = Model.new
+    model.should respond_to :name
+    model.should respond_to :age
+  end
 end

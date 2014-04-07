@@ -50,7 +50,8 @@ module NeoActiveGraph
         properties.each do |key, val|
           properties.delete(key) if val.nil?
         end
-        _create_node instance, properties
+
+        return false unless _create_node instance, properties
         # add if label given in the model
         _set_label instance
 
@@ -65,7 +66,11 @@ module NeoActiveGraph
         if instance.unique.nil?
           instance.node = NeoActiveGraph.db.create_node properties
         else
-          instance.node = NeoActiveGraph.db.create_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
+          begin
+            instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
+          rescue Neography::OperationFailureException => exception
+            return false
+          end
         end
       end
       attr_accessor :node
@@ -85,7 +90,7 @@ module NeoActiveGraph
       if @node # results from the db -> node is present so update props
         NeoActiveGraph.db.set_node_properties(@node, @properties)
       else # nothing in the db, need to make a node
-        self.class._store @properties
+        return false unless self.class._store @properties
       end
 
       @filters[:after].each do |method|
