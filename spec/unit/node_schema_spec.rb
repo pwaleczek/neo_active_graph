@@ -9,6 +9,7 @@ describe 'NeoActiveGraph::Node' do
     class NodeModel < NeoActiveGraph::Node
       label "Person"
       property :name, :type => String
+      property :email, :type => String, :format => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     end
   end
 
@@ -37,6 +38,7 @@ describe 'NeoActiveGraph::Node' do
     node = NodeModel.new
     node.name = 'Charlie Sheen'
     node.save.should be_a NeoActiveGraph::Node
+    node.name.should eq 'Charlie Sheen'
   end
 
 
@@ -58,8 +60,26 @@ describe 'NeoActiveGraph::Node' do
     end
   end
 
-  it 'verifies if node is already in the db'
-  it 'sets node properties'
+  it 'verifies if node is already in the db' do
+    node = NodeModel.new
+    node.should be_valid
+    node.persisted?.should be false
+  end
+
+  it 'sets node properties' do
+    node = NodeModel.new
+    node.name = "John Rambo"
+    node.email = "john@rambo.com"
+    node.persisted?.should be false
+    puts node.properties
+    node.save.should be_a NeoActiveGraph::Node
+    puts node.properties
+    # sleep 2
+    # puts node.persisted?
+
+    # puts node.node
+    # node.persisted?.should be true
+  end
   it 'updates node properties'
   it 'resets node properties'
 

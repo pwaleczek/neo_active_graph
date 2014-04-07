@@ -37,12 +37,10 @@ module NeoActiveGraph
       attr_accessor :before_filters, :after_filters
     end
 
-    attr_accessor :label, :unique
-    attr_reader :validators, :properties
+    attr_accessor :label, :unique, :validators, :properties
 
     def initialize properties={}
       # if this is nil then the node has not yet been created in the db
-      @node = nil
 
       @properties = self.class.get_properties
 
@@ -56,10 +54,6 @@ module NeoActiveGraph
       }
       parse_validators self.class.get_validators || {}
       parse_properties properties if @properties
-    end
-
-    def persisted?
-      self.id == 1
     end
 
   private

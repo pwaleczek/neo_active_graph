@@ -58,7 +58,6 @@ describe 'NeoActiveGraph::Schema' do
   it 'is used to extend a model class' do
     model = Model.new
     model.should be_valid
-    puts model.errors
   end
 
   it 'can have a label' do

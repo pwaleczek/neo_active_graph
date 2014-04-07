@@ -16,9 +16,7 @@ module NeoActiveGraph
         end
       end
 
-      def _find_single id
-        node = NeoActiveGraph.db.get_node id
-
+      def _instance_from_node node
         properties = NeoActiveGraph.db.get_node_properties(node) || {}
 
         instance = new Hash[properties.map{ |k, v| [k.to_sym, v] }]
@@ -27,17 +25,19 @@ module NeoActiveGraph
         instance
       end
 
+      def _find_single id
+        node = NeoActiveGraph.db.get_node id
+
+        _instance_from_node node
+      end
+
       def _find_multi ids
         nodes = NeoActiveGraph.db.get_nodes ids
 
         instances = []
 
         nodes.each do |node|
-          properties = NeoActiveGraph.db.get_node_properties(node) || {}
-
-          instance = new Hash[properties.map{ |k, v| [k.to_sym, v] }]
-          instance.node = node
-          instances.push instance
+          instances.push _instance_from_node node
         end #if nodes
 
         instances
@@ -54,7 +54,7 @@ module NeoActiveGraph
         return false unless _create_node instance, properties
         # add if label given in the model
         _set_label instance
-
+        puts instance.node
         instance
       end
 
@@ -77,6 +77,7 @@ module NeoActiveGraph
     end
 
     def initialize properties={}
+      @node = nil
       super properties
     end
 
@@ -111,6 +112,10 @@ module NeoActiveGraph
       else
         'id'
       end
+    end
+
+    def persisted?
+      !@node.nil?
     end
 
     def node; @node; end
