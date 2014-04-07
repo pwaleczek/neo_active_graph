@@ -50,18 +50,24 @@ module NeoActiveGraph
         properties.each do |key, val|
           properties.delete(key) if val.nil?
         end
+        _create_node instance, properties
+        # add if label given in the model
+        _set_label instance
 
+        instance
+      end
+
+      def _set_label instance
+        NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
+      end
+
+      def _create_node instance, properties
         if instance.unique.nil?
           instance.node = NeoActiveGraph.db.create_node properties
         else
           instance.node = NeoActiveGraph.db.create_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
         end
-        # add if label given in the model
-        NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
-
-        instance
       end
-
       attr_accessor :node
     end
 

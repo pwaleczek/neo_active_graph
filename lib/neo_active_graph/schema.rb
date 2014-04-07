@@ -55,7 +55,16 @@ module NeoActiveGraph
         :after => self.class.after_filters
       }
 
+      parse_properties properties if @properties
+    end
 
+    def persisted?
+      self.id == 1
+    end
+
+  private
+
+    def parse_properties properties={}
       @properties.each do |attr, value|
         attr = attr.to_sym
 
@@ -63,15 +72,7 @@ module NeoActiveGraph
 
         self.class.send(:attr_accessor, attr)
         self.send("#{attr}=", properties[attr])
-
-      end if @properties
-
+      end
     end
-
-
-    def persisted?
-      self.id == 1
-    end
-
   end
 end
