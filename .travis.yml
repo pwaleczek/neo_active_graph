@@ -23,4 +23,4 @@ before_install:
     - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
     - neo4j-community-$NEO4J_VERSION/bin/neo4j start
 
-script: bundle exec rspec -bc
+script: CODECLIMATE_REPO_TOKEN=0d8127992123fe9d4487f724e13e9ba7404776379a6d8fd5a5e774b98a1a87af bundle exec rspec -bc
