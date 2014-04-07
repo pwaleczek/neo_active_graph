@@ -50,6 +50,11 @@ module NeoActiveGraph
 
       @label = self.class.get_label
       @validators = self.class.get_validators
+      @filters = {
+        :before => self.class.before_filters,
+        :after => self.class.after_filters
+      }
+
 
       @properties.each do |attr, value|
         attr = attr.to_sym
@@ -60,10 +65,6 @@ module NeoActiveGraph
         self.send("#{attr}=", properties[attr])
 
       end if @properties
-
-      self.class.before_filters.each do |method|
-        method unless self.respond_to?(method)
-      end unless self.class.before_filters.nil?
 
     end
 

@@ -2,6 +2,7 @@ module NeoActiveGraph
   module Validator
 
     def valid?
+      @errors = nil
       return true unless @properties
 
       @properties.each do |prop, val|

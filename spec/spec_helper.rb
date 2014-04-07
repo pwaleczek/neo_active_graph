@@ -7,6 +7,6 @@ RSpec.configure do |config|
     # when "1.8.3"
 
 
-    neo.execute_query "START n=node(*) OPTIONAL MATCH n-[r]-() WHERE ID(n) <> 0 DELETE n,r"
+    # neo.execute_query "START n=node(*) OPTIONAL MATCH n-[r]-() WHERE ID(n) <> 0 DELETE n,r"
   end
 end
