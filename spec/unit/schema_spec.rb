@@ -81,6 +81,7 @@ describe 'NeoActiveGraph::Schema' do
   it 'validates property types' do
     model = Model.new :name => 'John Doe'
     model.should be_valid
+    model.errors.should be_empty
   end
 
   it 'validates property presence' do
@@ -92,6 +93,7 @@ describe 'NeoActiveGraph::Schema' do
   it 'validates property format using RegExp' do
     model = OtherModel.new(:name => 'John Doe',:email => 'john.doe@mail.com')
     model.should be_valid
+    model.errors.should be_empty
   end
 
 end

@@ -19,6 +19,7 @@ describe 'NeoActiveGraph::Node' do
     node = NodeModel.create
     node.should be_a NeoActiveGraph::Node
     node.should be_valid
+
     by_id_1 = node.id
     # puts node.properties#.should be_a Hash
   end
@@ -35,7 +36,7 @@ describe 'NeoActiveGraph::Node' do
   it 'creates a node instance and saves it' do
     node = NodeModel.new
     node.name = 'Charlie Sheen'
-    puts node.unique.nil?
+    node.save.should be_a NeoActiveGraph::Node
   end
 
 

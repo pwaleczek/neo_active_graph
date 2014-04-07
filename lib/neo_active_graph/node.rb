@@ -91,6 +91,9 @@ module NeoActiveGraph
       @filters[:after].each do |method|
         method unless self.respond_to?(method)
       end if @filters[:after]
+
+      self
+
     end
 
     def relationships name, type="all"
