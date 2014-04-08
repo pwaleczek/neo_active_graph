@@ -52,6 +52,7 @@ module NeoActiveGraph
       return false unless _create_node instance, properties
       # add if label given in the model
       _set_label instance
+
       instance
     end
 

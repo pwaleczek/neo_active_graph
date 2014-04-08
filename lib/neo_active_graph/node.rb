@@ -20,7 +20,7 @@ module NeoActiveGraph
       return unless self.valid?
 
       @filters[:before].each do |method|
-        method unless self.respond_to?(method)
+        method unless self.respond_to? method
       end if @filters[:before]
 
       properties = get_properties_from_object
@@ -34,15 +34,15 @@ module NeoActiveGraph
       end
 
       @filters[:after].each do |method|
-        method unless self.respond_to?(method)
+        method unless self.respond_to? method
       end if @filters[:after]
-
 
       self
     end
 
-    def relationships name, type="all"
-
+    def relationships type="all"
+      return nil unless @node
+      # ...TODO
     end
 
     def id

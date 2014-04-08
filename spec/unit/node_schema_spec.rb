@@ -87,5 +87,7 @@ describe 'NeoActiveGraph::Node' do
   end
 
   it 'removes a node from the db'
+  it 'can have relationships'
+  it 'can list relationships'
 
 end

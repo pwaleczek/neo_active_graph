@@ -1,51 +1,63 @@
+require 'neo_active_graph/relationship_class_methods'
+
 module NeoActiveGraph
   class Relationship < NeoActiveGraph::Schema
 
-  #   class << self
-  #     def create properties={}
-  #       instance = new properties
+    class << self
+      include NeoActiveGraph::RelationshipClassMethods
 
-  #       if instance.unique.nil?
-  #         instance.node = NeoActiveGraph.db.create_node properties
-  #       else
-  #         instance.node = NeoActiveGraph.db.create_unique_node instance.unique[:name], instance.unique[:key], Hash[*properties][instance.unique[:key].to_sym], properties
-  #       end
+      attr_accessor :relationship
+    end
 
-  #       NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
+    def initialize properties={}
+      # if this is nil then the relationship has not yet been created in the db
+      @relationship ||= nil
 
-  #       instance
-  #     end
+      super properties
+    end
 
-  #     def find attrs
-  #       # puts attrs
-  #       case attrs
-  #       when Fixnum
-  #         node = NeoActiveGraph.db.get_node attrs
-  #         properties = NeoActiveGraph.db.get_node_properties(node) || {}
-  #         instance = new Hash[properties.map{ |k, v| [k.to_sym, v] }]
-  #         instance.node = node
-  #         return instance
-  #       when Array
-  #         nodes = NeoActiveGraph.db.get_nodes attrs
-  #         instances = []
-  #         nodes.each do |node|
-  #           properties = NeoActiveGraph.db.get_node_properties(node) || {}
-  #           instance = new Hash[properties.map{ |k, v| [k.to_sym, v] }]
-  #           instance.node = node
-  #           instances.push instance
-  #         end #if nodes
+    def save
+      return unless self.valid?
 
-  #         return instances
-  #       end
-  #     end
+      @filters[:before].each do |method|
+        method unless self.respond_to? method
+      end if @filters[:before]
 
-  #     attr_accessor :node
-  #   end
+      properties = get_properties_from_object
 
-  #   def initialize properties
-  #     super properties
+      if @relationship # results from the db -> relationship is present so update props
+        self.relationship['data'] = NeoActiveGraph.db.set_relationship_properties(@relationship, properties).map{ |k, v| {k.to_s => v} }[0]
+      else # nothing in the db, need to make a relationship
+        instance = self.class._store properties
 
-  #   end
+        self.relationship = instance.relationship
 
+        return false unless instance
+      end
+
+      @filters[:after].each do |method|
+        method unless self.respond_to? method
+      end if @filters[:after]
+
+      self
+    end
+
+    def id
+      if @relationship
+        @relationship["self"].split("/").last.to_i
+      else
+        'id'
+      end
+    end
+
+    def persisted?
+      !@relationship.nil?
+    end
+
+    def relationship; @relationship; end
+    def relationship= relationship; @relationship = relationship; end
+
+    # for compatibility reasons
+    alias_method :neo_id, :id
   end
 end
