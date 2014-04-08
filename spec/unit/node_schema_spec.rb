@@ -29,7 +29,6 @@ describe 'NeoActiveGraph::Node' do
     node = NodeModel.create :name => "Charles Bronson"
     node.should be_a NeoActiveGraph::Node
     node.should be_valid
-    node.properties.should be_a Hash
     node.name.should eql 'Charles Bronson'
     by_id_2 = node.id
   end
@@ -71,17 +70,22 @@ describe 'NeoActiveGraph::Node' do
     node.name = "John Rambo"
     node.email = "john@rambo.com"
     node.persisted?.should be false
-    puts node.properties
     node.save.should be_a NeoActiveGraph::Node
-    puts node.properties
-    # sleep 2
-    # puts node.persisted?
-
-    # puts node.node
-    # node.persisted?.should be true
+    node.persisted?.should be true
   end
-  it 'updates node properties'
-  it 'resets node properties'
 
+  it 'updates node properties' do
+    node = NodeModel.new
+    node.name = "John Rambo"
+    node.email = "john@rambo.com"
+    node.persisted?.should be false
+    node.save.should be_a NeoActiveGraph::Node
+    node.persisted?.should be true
+    node.name = "Shirley Temple"
+    node.save.should be_a NeoActiveGraph::Node
+    node.node['data'].should include :name.to_s => "Shirley Temple"
+  end
+
+  it 'removes a node from the db'
 
 end

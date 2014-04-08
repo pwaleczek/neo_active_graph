@@ -11,7 +11,7 @@ module NeoActiveGraph
     end
 
     def get_property_for_validation property
-      @properties[property]
+      get_properties_from_object[property]
     end
 
     def validate_presence property, value
@@ -42,24 +42,22 @@ module NeoActiveGraph
 
     def add_error property, message
       @errors ||= {}
-      @errors[property] = message
+      @errors[property] ||= []
+      @errors[property].push message
     end
 
     def validate
-      return true unless @properties
-
-      @properties.each do |prop, val|
-        return false unless validate_each prop, val
+      @errors ||= {}
+      get_properties_from_object.each do |prop, val|
+        validate_each prop, self[prop.to_sym]
       end
-      true
+      @errors.empty?
     end
 
     def validate_each property, value
-      @errors ||= {}
       @validators[property].each do |name, validation|
         self.send "validate_#{name}", property, value if @validators[property][:presence]
       end
-      @errors.empty?
     end
   end
 end

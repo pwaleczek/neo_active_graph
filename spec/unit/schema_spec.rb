@@ -23,6 +23,11 @@ describe 'NeoActiveGraph::Schema' do
     end
   end
 
+  it 'has a schema defined' do
+    schema = NeoActiveGraph::Schema.new
+    schema.should respond_to :schema
+  end
+
   it 'creates a generic, empty Schema object' do
     schema = NeoActiveGraph::Schema.new
     schema.should be_valid
@@ -36,11 +41,6 @@ describe 'NeoActiveGraph::Schema' do
   it 'can be unique' do
     schema = NeoActiveGraph::Schema.new
     schema.should respond_to :unique
-  end
-
-  it 'can have properties' do
-    schema = NeoActiveGraph::Schema.new
-    schema.should respond_to :properties
   end
 
   it 'can have validators' do
@@ -80,6 +80,7 @@ describe 'NeoActiveGraph::Schema' do
 
   it 'validates property types' do
     model = Model.new :name => 'John Doe'
+    model.age = 98
     model.should be_valid
     model.errors.should be_empty
   end
@@ -91,8 +92,9 @@ describe 'NeoActiveGraph::Schema' do
   end
 
   it 'validates property format using RegExp' do
-    model = OtherModel.new(:name => 'John Doe',:email => 'john.doe@mail.com')
+    model = OtherModel.new :name => "John Doe", :email => 'john.doe@mail.com'
     model.should be_valid
+    model.name.should eq 'John Doe'
     model.errors.should be_empty
   end
 
@@ -101,7 +103,7 @@ describe 'NeoActiveGraph::Schema' do
     model.errors.should respond_to :[]
   end
 
-  it 'responds to properties' do
+  it 'responds to property name methods' do
     model = Model.new
     model.should respond_to :name
     model.should respond_to :age

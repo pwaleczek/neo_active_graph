@@ -54,7 +54,6 @@ module NeoActiveGraph
         return false unless _create_node instance, properties
         # add if label given in the model
         _set_label instance
-        puts instance.node
         instance
       end
 
@@ -69,15 +68,21 @@ module NeoActiveGraph
           begin
             instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
           rescue Neography::OperationFailureException => exception
+            @errors[:db] = "Failed to create node"
             return false
           end
         end
+        # puts instance.node
+        instance
       end
+
       attr_accessor :node
     end
 
     def initialize properties={}
-      @node = nil
+      # if this is nil then the node has not yet been created in the db
+      @node ||= nil
+
       super properties
     end
 
@@ -88,18 +93,22 @@ module NeoActiveGraph
         method unless self.respond_to?(method)
       end if @filters[:before]
 
+      properties = get_properties_from_object
+
       if @node # results from the db -> node is present so update props
-        NeoActiveGraph.db.set_node_properties(@node, @properties)
+        self.node['data'] = NeoActiveGraph.db.set_node_properties(@node, properties).map{ |k, v| {k.to_s => v} }[0]
       else # nothing in the db, need to make a node
-        return false unless self.class._store @properties
+        instance = self.class._store properties
+        self.node = instance.node
+        return false unless instance
       end
 
       @filters[:after].each do |method|
         method unless self.respond_to?(method)
       end if @filters[:after]
 
-      self
 
+      self
     end
 
     def relationships name, type="all"

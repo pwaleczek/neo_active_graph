@@ -37,12 +37,18 @@ module NeoActiveGraph
       attr_accessor :before_filters, :after_filters
     end
 
-    attr_accessor :label, :unique, :validators, :properties
+    attr_accessor :label, :unique, :validators, :schema
+
+    def [] property
+      self.send "#{property}"
+    end
+
+    def []= property, value
+      self.send "#{property}=", value
+    end
 
     def initialize properties={}
-      # if this is nil then the node has not yet been created in the db
-
-      @properties = self.class.get_properties
+      @schema = self.class.get_properties || {}
 
       @unique = self.class.get_unique
 
@@ -53,19 +59,26 @@ module NeoActiveGraph
         :after => self.class.after_filters
       }
       parse_validators self.class.get_validators || {}
-      parse_properties properties if @properties
+      parse_properties properties if @schema
     end
 
-  private
+    def get_properties_from_object
+      properties = {}
+
+      @schema.each do |name, value|
+        properties.merge! name => self[name]
+      end
+      properties
+    end
+    # def define_property
 
     def parse_properties properties={}
-      @properties.each do |attr, value|
+      @schema.each do |attr, value|
         attr = attr.to_sym
+        # @properties[attr] = properties[attr] || nil
 
-        @properties[attr] = properties[attr] || nil
-
-        self.class.send(:attr_accessor, attr)
-        self.send("#{attr}=", properties[attr])
+        self.class.send :attr_accessor, attr
+        self.send "#{attr}=", properties[attr] unless properties[attr].nil?
       end
     end
   end
