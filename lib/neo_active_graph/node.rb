@@ -20,7 +20,7 @@ module NeoActiveGraph
       return unless self.valid?
 
       @filters[:before].each do |method|
-        method unless self.respond_to? method
+        self.send(method) if self.respond_to? method
       end if @filters[:before]
 
       properties = get_properties_from_object
@@ -29,12 +29,12 @@ module NeoActiveGraph
         self.node['data'] = NeoActiveGraph.db.set_node_properties(@node, properties).map{ |k, v| {k.to_s => v} }[0]
       else # nothing in the db, need to make a node
         instance = self.class._store properties
-        self.node = instance.node
+        self.node = instance.node if instance
         return false unless instance
       end
 
       @filters[:after].each do |method|
-        method unless self.respond_to? method
+        self.send(method) if self.respond_to? method
       end if @filters[:after]
 
       self

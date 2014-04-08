@@ -50,6 +50,8 @@ module NeoActiveGraph
     def initialize properties={}
       @schema = self.class.get_properties || {}
 
+      @errors ||= {}
+
       @unique = self.class.get_unique
 
       @label = self.class.get_label
@@ -59,7 +61,7 @@ module NeoActiveGraph
         :after => self.class.after_filters
       }
       parse_validators self.class.get_validators || {}
-      parse_properties properties if @schema
+      parse_properties properties
     end
 
     def get_properties_from_object
@@ -73,10 +75,10 @@ module NeoActiveGraph
     # def define_property
 
     def parse_properties properties={}
-      @schema.each do |attr, value|
+      list = @schema.merge properties
+      list.each do |attr, value|
         attr = attr.to_sym
         # @properties[attr] = properties[attr] || nil
-
         self.class.send :attr_accessor, attr
         self.send "#{attr}=", properties[attr] unless properties[attr].nil?
       end
