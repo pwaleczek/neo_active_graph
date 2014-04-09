@@ -49,9 +49,9 @@ module NeoActiveGraph
         properties.delete(key) if val.nil?
       end
 
-      return false unless _create_node instance, properties
+      _create_node instance, properties
       # add if label given in the model
-      _set_label instance
+
 
       instance
     end
@@ -65,9 +65,15 @@ module NeoActiveGraph
 
       begin
         instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
+        _set_label instance
       rescue Neography::OperationFailureException => exception
-        # @errors[:db] = "Failed to create node"
-        return false
+
+        instance.errors ||= {}
+        instance.errors[:database] = [exception]
+      rescue Neography::NeographyError => exception
+        instance.errors ||= {}
+        instance.errors[:database] = [exception]
+        # return false
       end if !instance.unique.nil?
 
       instance
