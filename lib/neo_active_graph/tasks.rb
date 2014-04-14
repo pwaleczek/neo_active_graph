@@ -1,6 +1,6 @@
 require 'os'
 require 'neography'
-
+require "neo_active_graph"
 # NeoActiveGraph indexes
 #
 namespace :graph do
@@ -84,6 +84,17 @@ end
 
 # neo4j testing instance
 namespace :neo4j do
+
+  desc "Fill DB with a lot of nodes"
+  task :fill, [:count] do |task, args|
+    count = args[:count] || 1000000
+
+    (0..count).each do |obj|
+      properties = {:email => "email#{obj}@mail.com", :name => "Someone no. #{obj}"}
+      NeoActiveGraph.db.create_unique_node 'User_Idx', :email, properties[:email], properties
+    end
+  end
+
   desc "Install neo4j Community for testing"
   task :install, [:version] do |task, args|
 

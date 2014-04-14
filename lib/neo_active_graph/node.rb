@@ -26,7 +26,7 @@ module NeoActiveGraph
       properties = get_properties_from_object
 
       if @node # results from the db -> node is present so update props
-        self.node['data'] = NeoActiveGraph.db.set_node_properties(@node, properties).map{ |k, v| {k.to_s => v} }[0]
+        self.node['data'] = NeoActiveGraph.db.set_node_properties(@node, properties).inject({}){ |hash, (k, v)| hash.merge( k.to_s => v ) }
       else # nothing in the db, need to make a node
         instance = self.class._store properties
         self.errors = instance.errors if instance

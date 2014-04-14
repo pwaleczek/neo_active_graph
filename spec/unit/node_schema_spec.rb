@@ -11,6 +11,16 @@ describe 'NeoActiveGraph::Node' do
       property :name, :type => String
       property :email, :type => String, :format => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     end
+
+    # create an index for the UniqueModel
+    NeoActiveGraph.db.create_node_index "Person_Idx", "exact", "lucene"
+
+    class UniqueModel < NeoActiveGraph::Node
+      unique "Person_Idx", :email
+      label "Person"
+      property :name, :type => String
+      property :email, :type => String, :format => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    end
   end
 
   by_id_1 = nil
@@ -65,6 +75,16 @@ describe 'NeoActiveGraph::Node' do
     node.persisted?.should be false
   end
 
+  it 'fails to create a duplicate unique node' do
+    node1 = UniqueModel.create :name => "John Doe", :email => "john.doe@mail.com"
+    node1.should be_valid
+    node1.persisted?.should be true
+
+    node2 = UniqueModel.create :name => "John Doe", :email => "john.doe@mail.com"
+    node2.persisted?.should be false
+    node2.errors.should include :database => ["john.doe@mail.com is already taken."]
+  end
+
   it 'sets node properties' do
     node = NodeModel.new
     node.name = "John Rambo"
@@ -82,9 +102,12 @@ describe 'NeoActiveGraph::Node' do
     node.save.should be_a NeoActiveGraph::Node
     node.persisted?.should be true
     node.name = "Shirley Temple"
+    node.email = "shirley@temple.com"
     node.save.should be_a NeoActiveGraph::Node
     node.node['data'].should include :name.to_s => "Shirley Temple"
+    node.node['data'].should include :email.to_s => "shirley@temple.com"
   end
+
 
   it 'removes a node from the db'
   it 'can have relationships'

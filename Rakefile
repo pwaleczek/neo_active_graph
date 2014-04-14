@@ -1,8 +1,8 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-# PROJECT_ROOT = File.expand_path("..", __FILE__)
-# $:.unshift "#{PROJECT_ROOT}/lib"
+PROJECT_ROOT = File.expand_path("..", __FILE__)
+$:.unshift "#{PROJECT_ROOT}/lib"
 
 require "rspec/core/rake_task"
 require "neo_active_graph/tasks"

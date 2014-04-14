@@ -9,18 +9,15 @@ rvm:
 
 # needed for local Neo4j 2.0+
 jdk:
-    - oraclejdk7
+  - oraclejdk7
 
-# test across multiple versions of Neo4j:
-env:
-#     - NEO4J_VERSION="1.8.3"
-#     - NEO4J_VERSION="1.9.6"
-    - NEO4J_VERSION="2.0.1"
-
-# install Neo4j locally:
+# install Neo4j locally
+# and add the spatial plugin
 before_install:
-    - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
-    - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
-    - neo4j-community-$NEO4J_VERSION/bin/neo4j start
+  - wget dist.neo4j.org/neo4j-community-2.0.1-unix.tar.gz
+  - tar -xzf neo4j-community-2.0.1-unix.tar.gz
+  - wget dist.neo4j.org/spatial/neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip
+  - unzip -d neo4j-community-2.0.1/plugins/ neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip
+  - neo4j-community-2.0.1/bin/neo4j start
 
 script: CODECLIMATE_REPO_TOKEN=0d8127992123fe9d4487f724e13e9ba7404776379a6d8fd5a5e774b98a1a87af bundle exec rspec -bc

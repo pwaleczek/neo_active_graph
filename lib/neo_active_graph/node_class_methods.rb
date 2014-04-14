@@ -50,14 +50,10 @@ module NeoActiveGraph
       end
 
       _create_node instance, properties
-      # add if label given in the model
-
-
-      instance
     end
 
     def _set_label instance
-      NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
+      NeoActiveGraph.db.set_label instance.node, instance.label if instance.label && instance.persisted?
     end
 
     def _create_node instance, properties
@@ -65,16 +61,15 @@ module NeoActiveGraph
 
       begin
         instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
-        _set_label instance
+      # Neography::OperationFailureException in this case indicates uniqueness conflict
       rescue Neography::OperationFailureException => exception
-
-        instance.errors ||= {}
-        instance.errors[:database] = [exception]
+        instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} is already taken."]
       rescue Neography::NeographyError => exception
-        instance.errors ||= {}
         instance.errors[:database] = [exception]
         # return false
       end if !instance.unique.nil?
+
+      _set_label instance
 
       instance
     end

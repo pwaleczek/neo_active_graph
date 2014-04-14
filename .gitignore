@@ -30,4 +30,5 @@
 Gemfile.lock
 
 #neo4j test server
-neo4j-community-*
+neo4j-community*
+neo4j-spatial*

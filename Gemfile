@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'neography'
+gem 'neography', :git => 'https://github.com/pwaleczek/neography.git', :branch => 'master'
 gem 'neo4j-cypher', '~> 1.0.3'
 
 group :development, :test do

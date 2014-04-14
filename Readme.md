@@ -1,7 +1,7 @@
 # NeoActiveGraph
 [![Build Status](https://travis-ci.org/pwaleczek/neo_active_graph.svg?branch=master)](https://travis-ci.org/pwaleczek/neo_active_graph)
 
-[![Code Climate](https://codeclimate.com/github/pwaleczek/neo_active_graph.png)](https://codeclimate.com/github/pwaleczek/neo_active_graph)
+[![Code Climate](https://codeclimate.com/github/pwaleczek/neo_active_graph.png)![Code Climate Coverage](https://codeclimate.com/github/pwaleczek/neo_active_graph/coverage.png)](https://codeclimate.com/github/pwaleczek/neo_active_graph)
 
 An ActiveRecord-like [Neography](https://github.com/maxdemarzi/neography) wrapper.
 
