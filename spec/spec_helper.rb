@@ -3,8 +3,8 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 RSpec.configure do |config|
 
-  config.before :all do
-    neo = Neography::Rest.new "http://localhost:7475"
+  config.after :all do
+    neo = Neography::Rest.new (ENV["TRAVIS"] ? "http://localhost:7474" : "http://localhost:7475")
     # case ENV["NEO4J_VERSION"]
     # when "1.8.3"
 
