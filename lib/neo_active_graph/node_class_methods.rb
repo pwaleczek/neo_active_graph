@@ -53,6 +53,7 @@ module NeoActiveGraph
         _create_node instance, properties
       else
         _create_unique_node instance, properties
+      end
     end
 
     def _set_label instance
