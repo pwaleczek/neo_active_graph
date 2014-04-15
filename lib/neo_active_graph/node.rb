@@ -19,9 +19,7 @@ module NeoActiveGraph
     def save
       return false unless self.valid?
 
-      @filters[:before].each do |method|
-        self.send(method) if self.respond_to? method
-      end if @filters[:before]
+      run_before_filters
 
       properties = get_properties_from_object
 
@@ -35,9 +33,7 @@ module NeoActiveGraph
         return false unless instance.errors.empty?
       end
 
-      @filters[:after].each do |method|
-        self.send(method) if self.respond_to? method
-      end if @filters[:after]
+      run_after_filters
 
       self
     end
