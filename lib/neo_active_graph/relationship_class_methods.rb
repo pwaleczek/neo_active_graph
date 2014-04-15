@@ -5,7 +5,6 @@ module NeoActiveGraph
     end
 
     def find attrs
-      # puts attrs
       relationship = NeoActiveGraph.db.get_relationship id
       properties = NeoActiveGraph.db.get_relationship_properties(relationship) || {}
 
@@ -46,5 +45,6 @@ module NeoActiveGraph
 
       instance
     end
+
   end
 end

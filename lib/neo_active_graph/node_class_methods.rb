@@ -75,10 +75,14 @@ module NeoActiveGraph
         _set_label instance
         # Neography::OperationFailureException in this case indicates uniqueness conflict
       rescue Neography::OperationFailureException => exception
-        instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} is already taken."]
+        instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} already exists."]
       end
 
       instance
+    end
+
+    def _create_relationship node, name="",
+      NeoActiveGraph.db.create_relationship
     end
   end
 end

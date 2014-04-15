@@ -40,7 +40,7 @@ module NeoActiveGraph
 
     def relationships type="all"
       return nil unless @node
-      # ...TODO
+      NeoActiveGraph.db.get_node_relationships @node
     end
 
     def id

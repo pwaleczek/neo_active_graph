@@ -82,7 +82,7 @@ describe 'NeoActiveGraph::Node' do
 
     node2 = UniqueModel.create :name => "John Doe", :email => "john.doe@mail.com"
     node2.persisted?.should be false
-    node2.errors.should include :database => ["john.doe@mail.com is already taken."]
+    node2.errors.should include :database => ["john.doe@mail.com already exists."]
   end
 
   it 'sets node properties' do
@@ -108,9 +108,22 @@ describe 'NeoActiveGraph::Node' do
     node.node['data'].should include :email.to_s => "shirley@temple.com"
   end
 
-
   it 'removes a node from the db'
-  it 'can have relationships'
-  it 'can list relationships'
+
+  it 'has relationships' do
+    node1 = NodeModel.create :name => "John Doe", :email => "john.doe@mail.com"
+    node1.should be_valid
+    node1.persisted?.should be true
+
+    node2 = NodeModel.create :name => "Joana Doe", :email => "joana.doe@mail.com"
+    node2.should be_valid
+    node2.persisted?.should be true
+
+    NeoActiveGraph.db.create_relationship("lives_with", node1.node, node2.node)
+
+    node1.relationships[0].should be_a(Hash)
+    node1.relationships[0]['type'].should eq "lives_with"
+  end
+
 
 end

@@ -7,19 +7,19 @@ namespace :graph do
   namespace :node do
 
     desc "Get node index list"
-    task :list_indexes => :environment do
+    task :list_indexes do
       indexes = NeoActiveGraph.db.list_node_indexes
       display indexes
     end
 
     desc "Create a node index [{name}]"
-    task :create_index, [:name] => :environment do |task, args|
+    task :create_index, [:name] do |task, args|
       resp = NeoActiveGraph.db.create_node_index args[:name], "exact", "lucene"
       display resp
     end
 
     desc "Drop a node index [{name}]"
-    task :drop_index, [:name] => :environment do |task, args|
+    task :drop_index, [:name] do |task, args|
       begin
         resp = NeoActiveGraph.db.drop_node_index args[:name]
       rescue Neography::NotFoundException => err
@@ -35,19 +35,19 @@ namespace :graph do
   namespace :relationship do
 
     desc "Get relationship index list"
-    task :list_indexes => :environment do
+    task :list_indexes do
       indexes = NeoActiveGraph.db.list_relationship_indexes
       display indexes
     end
 
     desc "Create a relationship index [{name}]"
-    task :create_index, [:name] => :environment do |task, args|
+    task :create_index, [:name] do |task, args|
       resp = NeoActiveGraph.db.create_relationship_index args[:name], "exact", "lucene"
       display resp
     end
 
     desc "Drop a relationship index [{name}]"
-    task :drop_index, [:name] => :environment do |task, args|
+    task :drop_index, [:name] do |task, args|
       begin
         resp = NeoActiveGraph.db.drop_relationship_index args[:name]
       rescue Neography::NotFoundException => err
