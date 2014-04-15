@@ -64,9 +64,6 @@ module NeoActiveGraph
       # Neography::OperationFailureException in this case indicates uniqueness conflict
       rescue Neography::OperationFailureException => exception
         instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} is already taken."]
-      rescue Neography::NeographyError => exception
-        instance.errors[:database] = [exception]
-        # return false
       end if !instance.unique.nil?
 
       _set_label instance

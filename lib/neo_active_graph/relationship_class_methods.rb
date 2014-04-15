@@ -7,16 +7,10 @@ module NeoActiveGraph
     def find attrs
       # puts attrs
       relationship = NeoActiveGraph.db.get_relationship id
-
-      _instance_from_relationship relationship
-    end
-
-    def _instance_from_relationship relationship
       properties = NeoActiveGraph.db.get_relationship_properties(relationship) || {}
 
       instance = new Hash[properties.map{ |k, v| [k.to_sym, v] }]
       instance.relationship = relationship
-
       instance
     end
 

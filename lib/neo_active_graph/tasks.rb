@@ -85,6 +85,8 @@ end
 # neo4j testing instance
 namespace :neo4j do
 
+  neo4j_version = "2.0.2"
+
   desc "Fill DB with a lot of nodes"
   task :fill, [:count] do |task, args|
     count = args[:count] || 1000000
@@ -98,7 +100,7 @@ namespace :neo4j do
   desc "Install neo4j Community for testing"
   task :install, [:version] do |task, args|
 
-    version = args[:version] || "2.0.1"
+    version = args[:version] || neo4j_version
     puts "Installing version #{version} ..."
 
     if OS.doze?
@@ -125,6 +127,9 @@ namespace :neo4j do
         changed = changed.gsub!("org.neo4j.server.webserver.https.port=7473", "org.neo4j.server.webserver.https.port=7485")
         File.open("neo4j-community-#{version}/conf/neo4j-server.properties", "w") { |file| file.puts changed }
         puts "Done!"
+        puts "Installing Splatial plugin..."
+        system "wget dist.neo4j.org/spatial/neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip"
+        system "unzip -d neo4j-community-2.0.1/plugins/ neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip"
       end
 
       puts "You're all good, the server will run @ http://localhost:7475/"
@@ -141,19 +146,19 @@ namespace :neo4j do
   desc "Remove test neo4j"
   task :remove, [:version] do |task, args|
 
-    version = args[:version] || "2.0.1"
+    version = args[:version] || neo4j_version
     if OS.doze?
       puts "Not implemented yet :("
     else
-      puts "Removing #{version}"
-      system "rm -rf neo4j-community-#{version}*"
+      puts "Removing #{version} and Spatial plugin..."
+      system "rm -rf neo4j-community-#{version}* neo4j-spatial*"
     end
   end
 
   desc "Start neo4j testing instance"
   task :start, [:version] do |task, args|
 
-    version = args[:version] || "2.0.1"
+    version = args[:version] || neo4j_version
     if OS.doze?
       puts "Not implemented yet :("
     else
@@ -164,7 +169,7 @@ namespace :neo4j do
   desc "Stop neo4j testing instance"
   task :stop, [:version] do |task, args|
 
-    version = args[:version] || "2.0.1"
+    version = args[:version] || neo4j_version
     if OS.doze?
       puts "Not implemented yet :("
     else

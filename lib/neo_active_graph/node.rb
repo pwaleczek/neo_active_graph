@@ -31,6 +31,7 @@ module NeoActiveGraph
         instance = self.class._store properties
         self.errors = instance.errors if instance
         self.node = instance.node if instance
+
         return false unless instance.errors.empty?
       end
 

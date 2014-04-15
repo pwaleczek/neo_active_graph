@@ -29,6 +29,7 @@ module NeoActiveGraph
     def get_unique; @unique; end
     def get_validators; @validators; end
     def get_properties; @properties; end
+
   end
 end
 
