@@ -81,8 +81,8 @@ module NeoActiveGraph
       instance
     end
 
-    def _create_relationship node, name="",
-      NeoActiveGraph.db.create_relationship
+    def _create_relationship node
+
     end
   end
 end
