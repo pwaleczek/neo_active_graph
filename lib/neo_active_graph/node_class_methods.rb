@@ -49,24 +49,33 @@ module NeoActiveGraph
         properties.delete(key) if val.nil?
       end
 
-      _create_node instance, properties
+      if instance.unique.nil?
+        _create_node instance, properties
+      else
+        _create_unique_node instance, properties
     end
 
     def _set_label instance
-      NeoActiveGraph.db.set_label instance.node, instance.label if instance.label && instance.persisted?
+      NeoActiveGraph.db.set_label instance.node, instance.label if instance.label
     end
 
     def _create_node instance, properties
-      instance.node = NeoActiveGraph.db.create_node properties if instance.unique.nil?
-
-      begin
-        instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
-      # Neography::OperationFailureException in this case indicates uniqueness conflict
-      rescue Neography::OperationFailureException => exception
-        instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} is already taken."]
-      end if !instance.unique.nil?
+      # if instance.unique.nil?
+      instance.node = NeoActiveGraph.db.create_node properties
 
       _set_label instance
+
+      instance
+    end
+
+    def _create_unique_node instance, properties
+      begin
+        instance.node = NeoActiveGraph.db.create_or_fail_unique_node instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
+        _set_label instance
+        # Neography::OperationFailureException in this case indicates uniqueness conflict
+      rescue Neography::OperationFailureException => exception
+        instance.errors[:database] = ["#{instance[instance.unique[:key].to_sym]} is already taken."]
+      end
 
       instance
     end

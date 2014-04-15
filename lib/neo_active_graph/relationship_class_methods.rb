@@ -38,7 +38,7 @@ module NeoActiveGraph
       instance.relationship = NeoActiveGraph.db.create_relationship properties if instance.unique.nil?
 
       begin
-        instance.node = NeoActiveGraph.db.create_or_fail_unique_relationship instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
+        instance.relationship = NeoActiveGraph.db.create_or_fail_unique_relationship instance.unique[:name], instance.unique[:key], properties[instance.unique[:key]], properties
       rescue Exception => exception
         @errors[:db] = "Failed to create relationship"
         return false

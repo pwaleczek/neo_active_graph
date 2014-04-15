@@ -48,16 +48,10 @@ module NeoActiveGraph
     end
     # def define_property
 
-    def run_before_filters
-      @filters[:before].each do |method|
+    def run_filters type
+      @filters[type].each do |method|
         self.send(method) if self.respond_to? method
-      end if @filters[:before]
-    end
-
-    def run_after_filters
-      @filters[:after].each do |method|
-        self.send(method) if self.respond_to? method
-      end if @filters[:after]
+      end if @filters[type]
     end
 
     def parse_properties properties={}
