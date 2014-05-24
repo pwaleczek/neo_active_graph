@@ -3,7 +3,6 @@ require 'neo4j-cypher'
 require 'neo4j-cypher/neography'
 require 'neo_active_graph/query'
 require 'neo_active_graph/validator'
-# require 'neo_active_graph/active_record_compatibility'
 require 'neo_active_graph/schema'
 require 'neo_active_graph/node'
 require 'neo_active_graph/relationship'
@@ -20,8 +19,18 @@ module NeoActiveGraph
       # running locally
       @rest = Neography::Rest.new
     end
+  end
 
+  def self.support_rails
+    begin
+      require 'active_model'
 
+      include ActiveModel::Conversion
+      extend ActiveModel::Naming
+    rescue LoadError
+      puts 'INFO: No rails found..'
+      # not using rails
+    end
   end
 
   def self.db

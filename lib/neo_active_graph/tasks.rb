@@ -85,7 +85,7 @@ end
 # neo4j testing instance
 namespace :neo4j do
 
-  neo4j_version = "2.0.2"
+  neo4j_version = "2.0.3"
 
   desc "Fill DB with a lot of nodes"
   task :fill, [:count] do |task, args|
@@ -129,7 +129,7 @@ namespace :neo4j do
         puts "Done!"
         puts "Installing Splatial plugin..."
         system "wget dist.neo4j.org/spatial/neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip"
-        system "unzip -d neo4j-community-2.0.1/plugins/ neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip"
+        system "unzip -d neo4j-community-2.0.2/plugins/ neo4j-spatial-0.12-neo4j-2.0.1-server-plugin.zip"
       end
 
       puts "You're all good, the server will run @ http://localhost:7475/"

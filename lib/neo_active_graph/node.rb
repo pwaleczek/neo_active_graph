@@ -13,6 +13,8 @@ module NeoActiveGraph
       # if this is nil then the node has not yet been created in the db
       @node ||= nil
 
+      NeoActiveGraph::support_rails
+
       super properties
     end
 
@@ -57,6 +59,8 @@ module NeoActiveGraph
 
     def node; @node; end
     def node= node; @node = node; end
+
+
 
     # for compatibility reasons
     alias_method :neo_id, :id
